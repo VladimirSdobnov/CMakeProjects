@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
 # название проекта
-project(ProgrammingLabsWork_2022_2023)
+project(Stack)
 
 # затем следует список инструкций для подключения проектов из подкаталогов
 
