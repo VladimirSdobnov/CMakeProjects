@@ -10,7 +10,7 @@ int main() {
 
   try {
       result = division(a, b);
-	  success = true;
+      success = true;
   } catch (std::exception err) {
 	  std::cerr << err.what() << std::endl;
   }
