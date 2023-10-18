@@ -12,7 +12,7 @@ int main() {
       result = division(a, b);
       success = true;
   } catch (std::exception err) {
-	  std::cerr << err.what() << std::endl;
+      std::cerr << err.what() << std::endl;
   }
   if (success) { printf("%d / %d = %.2f\n", a, b, result); success = false; }
 
