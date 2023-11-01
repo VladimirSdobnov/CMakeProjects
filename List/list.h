@@ -35,13 +35,13 @@ private:
 	TNode<T>* tail;
 public:
 	TList() : head(nullptr), tail(nullptr), count(0) {}
-	TList(T* mass, int mass_size) {
+	TList(T* data, int mass_size) {
 		if (mass_size < 1) { throw std::logic_error("Mass is empty"); }
 		count = mass_size;
-		head = new TNode<T>(mass[0]);
+		head = new TNode<T>(data[0]);
 		TNode<T>* p = head;
 		for (size_t i = 1; i < mass_size; i++) {
-			p->_next = new TNode<T>(mass[i]);
+			p->_next = new TNode<T>(data[i]);
 			p = p->_next;
 		}
 		tail = p;
