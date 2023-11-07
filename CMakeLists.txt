@@ -12,6 +12,7 @@ include(cmake/function.cmake)    # подхватываем функции, ре
 
 
 add_subdirectory(Stack)
+add_subdirectory(ParsAlgorithm)
 add_subdirectory(StackOnList)
 add_subdirectory(List)   # подключаем дополнительный CMakeLists.txt из подкаталога с именем lib_example
 add_subdirectory(main)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем main

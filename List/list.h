@@ -47,18 +47,52 @@ public:
 		tail = p;
 	}
 	~TList() {
-		head = nullptr;
-		tail = nullptr;
+		TNode<T>* currentNode = head;
+		while (currentNode != nullptr) {
+			TNode<T>* nextNode = currentNode->next();
+			delete currentNode;
+			currentNode = nextNode;
+		}
 	}
 	void insert(TNode<T>* p, const T& data) {
-		p->_next = new TNode<T>(data, p->_next);
-		if (p->_next == nullptr) { tail = p; }
+		if (p == nullptr) { 
+			p = new TNode<T>(data, head);
+			head = p;
+		}
+		else{ p->_next = new TNode<T>(data, p->_next); }
 		count++;
+		if (p->_next == nullptr) { tail = p; return; }
+		if (p->_next->_next == nullptr) { tail = p->_next; return; }
+		
 	}
+	void erase(TNode<T>* p) {
+		if (p == nullptr) { return; }
+		if (p == head) { head = p->_next; }
+		else
+		{
+			TNode<T>* tmp = head;
+			while (tmp->_next != p && tmp->_next != nullptr) {
+				tmp = tmp->_next;
+			}
+			if (tmp->_next == nullptr) { throw std::logic_error("node is missing"); }
+			tmp->_next = p->_next;
+			if (tmp->_next == nullptr) { tail = tmp; }
+		}
+		delete p;
+		count--;
+		if (head == nullptr) { tail = nullptr; }
+	}
+	void push_back(const T& data) { insert(tail, data); }
+	void push_front(const T& data) { insert(nullptr, data); }
+	void pop_back() { erase(tail); }
+	void pop_front() { erase(head); }
+	T front() { return head->data(); }
+	T back() { return tail->data(); }
+
+	bool empty() { return count == 0; }
 
 
-
-	TNode<T>* front() { return head; }
-	TNode<T>* back() { return tail; }
+	TNode<T>* front_node() { return head; }
+	TNode<T>* back_node() { return tail; }
 	size_t size() { return count; }
 };
