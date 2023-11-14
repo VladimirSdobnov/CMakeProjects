@@ -55,18 +55,15 @@ public:
 		}
 	}
 	void insert(TNode<T>* p, const T& data) {
-		if (p == nullptr) { 
-			p = new TNode<T>(data, head);
-			head = p;
-		}
-		else{ p->_next = new TNode<T>(data, p->_next); }
+		if (p == nullptr) { throw std::logic_error("Wrong pointer"); }
+		p->_next = new TNode<T>(data, p->_next);
 		count++;
 		if (p->_next == nullptr) { tail = p; return; }
 		if (p->_next->_next == nullptr) { tail = p->_next; return; }
 		
 	}
 	void erase(TNode<T>* p) {
-		if (p == nullptr) { return; }
+		if (p == nullptr) { throw std::logic_error("Wrong pointer"); }
 		if (p == head) { head = p->_next; }
 		else
 		{
@@ -83,7 +80,12 @@ public:
 		if (head == nullptr) { tail = nullptr; }
 	}
 	void push_back(const T& data) { insert(tail, data); }
-	void push_front(const T& data) { insert(nullptr, data); }
+	void push_front(const T& data) {
+		TNode<T>* p = new TNode<T>(data, head);
+		head = p;
+		count++;
+		if (p->_next == nullptr) { tail = p; }
+	}
 	void pop_back() { erase(tail); }
 	void pop_front() { erase(head); }
 	T front() { return head->data(); }

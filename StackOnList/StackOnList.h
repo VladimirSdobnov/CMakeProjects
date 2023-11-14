@@ -12,12 +12,12 @@ public:
 	bool empty() { return data.empty(); }
 	T top() {
 		if (data.empty()) { throw std::logic_error("stack is empty"); }
-		return data.back();
+		return data.front();
 	}
 	void pop() { 
 		if (data.empty()) { return; }
-		data.pop_back();
+		data.pop_front();
 	}
-	void push(const T& elem) { data.push_back(elem); }
+	void push(const T& elem) { data.push_front(elem); }
 	size_t size() { return data.size(); }
 };
