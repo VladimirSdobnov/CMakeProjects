@@ -112,14 +112,11 @@ TEST(test_TList, can_insert) {
 	EXPECT_EQ(res, s1);
 }
 
-TEST(test_TList, can_insert_in_empty) {
+TEST(test_TList, cant_insert_in_empty) {
 	// Arrange
 	TList<int> list;
 	TNode<int>* p = list.front_node();
-	list.insert(p, 25);
-	p = list.front_node();
-	EXPECT_EQ(list.front(), 25);
-	EXPECT_EQ(list.back_node(), p);
+	EXPECT_ANY_THROW(list.insert(p, 25));
 }
 
 TEST(test_TList, can_erase) {
@@ -145,20 +142,17 @@ TEST(test_TList, can_erase) {
 	EXPECT_EQ(res, s1);
 }
 
-TEST(test_TList, can_erese_in_empty) {
+TEST(test_TList, cant_erese_in_empty) {
 	// Arrange
 	TList<int> list;
 	TNode<int>* p = list.front_node();
-	list.erase(p);
-	EXPECT_EQ(list.back_node(), nullptr);
-	EXPECT_EQ(list.front_node(), nullptr);
+	EXPECT_ANY_THROW(list.erase(p));
 }
 
 TEST(test_TList, can_erese_one_power) {
 	// Arrange
 	TList<int> list;
-	TNode<int>* p = list.front_node();
-	list.insert(p, 25);
+	list.push_front(25);
 	list.erase(list.front_node());
 	EXPECT_EQ(list.front_node(), nullptr);
 	EXPECT_EQ(list.back_node(), nullptr);
@@ -183,16 +177,16 @@ TEST(test_TList, can_push_back) {
 	ASSERT_EQ(list.back(), 30);
 }
 
-TEST(test_TList, can_pop_front_empty) {
+TEST(test_TList, cant_pop_front_empty) {
 	// Arrange
 	TList<int> list;
-	ASSERT_NO_THROW(list.pop_front());
+	ASSERT_ANY_THROW(list.pop_front());
 }
 
-TEST(test_TList, can_pop_back_empty) {
+TEST(test_TList, cant_pop_back_empty) {
 	// Arrange
 	TList<int> list;
-	ASSERT_NO_THROW(list.pop_back());
+	ASSERT_ANY_THROW(list.pop_back());
 }
 
 TEST(test_TList, can_pop_back) {

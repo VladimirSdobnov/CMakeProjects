@@ -19,7 +19,7 @@ TEST(Algorithm, can_brackets_false) {
 
 TEST(Algorithm, can_brackets_true_difficult) {
 	// Arrange
-	std::string st = "{{{{{{(((a)))}}}}}}[][]{[]}()()";
+	std::string st = "{{{{{{(((a)))}}}}}}[a][]{[]}()()";
 
 	// Act & Assert
 	EXPECT_EQ(CorrectBrackets(st), true);
@@ -43,19 +43,19 @@ TEST(Algorithm, can_string_to_double) {
 	std::string st5 = "   345 56.907.0908 234 123";
 	int pos = 0;
 	double x = 0.0000056;
-	EXPECT_DOUBLE_EQ(x, NumberDouble(st1, pos));
+	EXPECT_FLOAT_EQ(x, GetNumberFloat(st1, pos));
 	EXPECT_EQ(pos, 9);
 	pos = 0;
 	x = 23.03402;
-	EXPECT_DOUBLE_EQ(x, NumberDouble(st2, pos));
+	EXPECT_FLOAT_EQ(x, GetNumberFloat(st2, pos));
 	pos = 0;
-	EXPECT_ANY_THROW(NumberDouble(st3, pos));
+	EXPECT_ANY_THROW(GetNumberFloat(st3, pos));
 	pos = 7;
 	x = 56.907;
-	EXPECT_DOUBLE_EQ(x, NumberDouble(st4, pos));
+	EXPECT_FLOAT_EQ(x, GetNumberFloat(st4, pos));
 	pos = 7;
 	x = 56.907;
-	EXPECT_DOUBLE_EQ(x, NumberDouble(st5, pos));
+	EXPECT_FLOAT_EQ(x, GetNumberFloat(st5, pos));
 }
 
 TEST(Algorithm, can_coorect_form) {
@@ -65,7 +65,7 @@ TEST(Algorithm, can_coorect_form) {
 	std::string st3 = "arcthqe";
 	std::string st4 = "aarcsin";
 	std::string st5 = "aarcsincostgcthxert";
-	std::string st6 = "a(arcsin(costgc)thxert";
+	std::string st6 = "a(arcsin(costgc)thxert)";
 	std::string st7 = "a+arcsincos(tgc+thx)ert";
 	std::string st8 = "a.arcsin,cos(tgc+thx)ert";
 	CorrectForm(st1);
@@ -75,18 +75,18 @@ TEST(Algorithm, can_coorect_form) {
 	res = "arcsins*t";
 	EXPECT_EQ(res, st2);
 	CorrectForm(st3);
-	res = "arcthq*e";
+	res = "arcthq*2.718";
 	EXPECT_EQ(res, st3);
 	CorrectForm(st4);
 	res = "a*arcsin";
 	EXPECT_EQ(res, st4);
-	res = "a*arcsincostgcthx*e*r*t";
+	res = "a*arcsincostgcthx*2.718*r*t";
 	CorrectForm(st5);
 	EXPECT_EQ(res, st5);
-	res = "a*(arcsin(costgc)*thx*e*r*t";
+	res = "a*(arcsin(costgc)*thx*2.718*r*t)";
 	CorrectForm(st6);
 	EXPECT_EQ(res, st6);
-	res = "a+arcsincos(tgc+thx)*e*r*t";
+	res = "a+arcsincos(tgc+thx)*2.718*r*t";
 	CorrectForm(st7);
 	EXPECT_EQ(res, st7);
 	EXPECT_ANY_THROW(CorrectForm(st8));
@@ -160,4 +160,21 @@ TEST(Algorithm, can_get_RPN) {
 	res = "6 7 * arcsin 5 ^ 5 - x y * + ";
 	EXPECT_EQ(res, toRPN(st));
 	std::cout << st;
+}
+
+TEST(Algorithm, can_replace) {
+	std::string st1 = "pi*e*e*34";
+	ReplaceConstant(st1);
+	EXPECT_EQ("3.142*2.718*2.718*34", st1);
+}
+
+TEST(Algorithm, can_calculate) {
+	std::string st1 = "3 * 2 + (34 - 2) / 2 ^ 3";
+	float res = Calculate(st1);
+	EXPECT_FLOAT_EQ(10, res);
+	std::string st2;
+	std::cin >> st2;
+	float x;
+	x = Calculate(st2);
+	std::cout << "\n" << x;
 }

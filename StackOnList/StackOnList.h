@@ -14,9 +14,11 @@ public:
 		if (data.empty()) { throw std::logic_error("stack is empty"); }
 		return data.front();
 	}
-	void pop() { 
-		if (data.empty()) { return; }
+	T pop() { 
+		if (data.empty()) { return NULL; }
+		T res = top();
 		data.pop_front();
+		return res;
 	}
 	void push(const T& elem) { data.push_front(elem); }
 	size_t size() { return data.size(); }
