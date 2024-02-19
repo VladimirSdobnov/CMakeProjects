@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 
 template <class T>
@@ -46,6 +47,11 @@ public:
 		}
 		tail = p;
 	}
+	TList(const TList& list) {
+		head = list.head;
+		tail = list.tail;
+		count = list.count;
+	}
 	~TList() {
 		TNode<T>* currentNode = head;
 		while (currentNode != nullptr) {
@@ -79,7 +85,12 @@ public:
 		count--;
 		if (head == nullptr) { tail = nullptr; }
 	}
-	void push_back(const T& data) { insert(tail, data); }
+	void push_back(const T& data) {
+		TNode<T>* p = new TNode<T>(data);
+		if (head == nullptr) { head = p; tail = p; }
+		else { tail->_next = p; tail = p; }
+		count++;
+	}
 	void push_front(const T& data) {
 		TNode<T>* p = new TNode<T>(data, head);
 		head = p;

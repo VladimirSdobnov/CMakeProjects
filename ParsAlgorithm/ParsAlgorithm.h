@@ -1,41 +1,10 @@
+#pragma once
 #include "../StackOnList/StackOnList.h"
+#include "../QueueOnList/QueueOnList.h"
+#include"../TVectore/TVector.h"
 #include <string>
 #include <map>
 #include <math.h>
-
-std::map<std::string, int> Dict{
-		{std::string("("), 0},
-		{std::string("{"), 0},
-		{std::string("["), 0},
-		{std::string("+"), 1},
-		{std::string("-"), 1},
-		{std::string("*"), 2},
-		{std::string("/"), 2},
-		{std::string("^"), 3},
-		{std::string("~"), 4},
-		{std::string("!!"), 4},
-		{std::string("!"), 4},
-		{std::string("arcsh"), 4},
-		{std::string("arcch"), 4},
-		{std::string("arcth"), 4},
-		{std::string("arccth"), 4},
-		{std::string("arcsin"), 4},
-		{std::string("arccos"), 4},
-		{std::string("arctg"), 4},
-		{std::string("arcctg"), 4},
-		{std::string("sqrt"), 4},
-		{std::string("sqr"), 4},
-		{std::string("sin"), 4},
-		{std::string("cos"), 4},
-		{std::string("tg"), 4},
-		{std::string("ctg"), 4},
-		{std::string("sh"), 4},
-		{std::string("ch"), 4},
-		{std::string("ln"), 4},
-		{std::string("th"), 4},
-		{std::string("cth"), 4},
-		
-};
 
 //float logarifm(StackOnList<float>& stack) {
 //	if (stack.top() <= 0) { throw std::logic_error("Can't claculate logaritm non-positive number"); }
@@ -98,30 +67,6 @@ std::map<std::string, int> Dict{
 //}
 //
 
-
-
-std::map<std::string, int> DifFunc{
-		{std::string("arcsh"), 4},
-		{std::string("arcch"), 4},
-		{std::string("arcth"), 4},
-		{std::string("arccth"), 4},
-		{std::string("arcsin"), 4},
-		{std::string("arccos"), 4},
-		{std::string("arctg"), 4},
-		{std::string("arcctg"), 4},
-		{std::string("sqrt"), 4},
-		{std::string("sqr"), 4},
-		{std::string("sin"), 4},
-		{std::string("cos"), 4},
-		{std::string("tg"), 4},
-		{std::string("ctg"), 4},
-		{std::string("sh"), 4},
-		{std::string("ch"), 4},
-		{std::string("ln"), 4},
-		{std::string("th"), 4},
-		{std::string("cth"), 4}
-};
-
 bool isLetter(char elem) {
 	return elem <= 'Z' && elem >= 'A' ||
 		elem <= 'z' && elem >= 'a';
@@ -130,14 +75,6 @@ bool isLetter(char elem) {
 bool isNumber(char elem) {
 	return elem <= '9' &&
 		elem >= '0';
-}
-
-bool isOperator(std::string elem) {
-	return Dict.find(elem) != Dict.end();
-}
-
-bool isDifFunc(std::string elem) {
-	return DifFunc.find(elem) != DifFunc.end();
 }
 
 bool isOpenBracket(char elem) {
@@ -189,6 +126,7 @@ float GetNumberFloat(std::string& st, int& pos) {
 		pos++;
 	}
 	if (pos + 1 < st.length() && st[pos + 1] == '.') { throw std::logic_error("wrong number"); }
+	pos--;
 	return std::stof(tmp);
 }
 
@@ -206,34 +144,6 @@ std::string GetNumberString(std::string& st, int& pos) {
 	return tmp;
 }
 
-std::string GetOperator(std::string& input, int& pos) {
-	std::string res = "Not";
-	if (isOperator(input.substr(pos, 6))) {
-		res = input.substr(pos, 6);
-		pos += 5;
-	}
-	else if (isOperator(input.substr(pos, 5))) {
-		res = input.substr(pos, 5);
-		pos += 4;
-	}
-	else if (isOperator(input.substr(pos, 4))) {
-		res = input.substr(pos, 4);
-		pos += 3;
-	}
-	else if (isOperator(input.substr(pos, 3))) {
-		res = input.substr(pos, 3);
-		pos += 2;
-	}
-	else if (isOperator(input.substr(pos, 2))) {
-		res = input.substr(pos, 2);
-		pos += 1;
-	}
-	else if (isOperator(input.substr(pos, 1))) {
-		res = input.substr(pos, 1);
-	}
-	return res;
-}
-
 void ReplaceConstant(std::string& input) {
 	while (input.find('e') != std::string::npos) {
 		input.replace(input.find('e'), 1, "2.718");
@@ -242,31 +152,162 @@ void ReplaceConstant(std::string& input) {
 		input.replace(input.find("pi"), 2, "3.142");
 	}
 }
-
+ //Переделать
 void ReplaceVar(std::string& input, std::string var, std::string val) {
 	while (input.find(var) != std::string::npos) {
 		input.replace(input.find(var), 1, val);
 	}
 }
 
-void CorrectForm(std::string& input) {
+template<class T1, class T2>
+class TPair {
+	T1 _key;
+	T2 _val;
+public:
+	TPair(T1 key, T2 val):_key(key), _val(val) {}
+	T2 val() { return val; }
+	T1 key() { return key; }
+	bool operator==(TPair const& other) const { return _key == other._key; }
+};
+class Lexem {
+	std::string _type;
+	float _value;
+	std::string _name;
+public:
+	Lexem() :_type(""), _value(0), _name("") {};
+	Lexem(std::string& input, int& pos) {
+		if (isNumber(input[pos])) {
+			_type = "Number";
+			int tmppos = pos;
+			_value = GetNumberFloat(input, tmppos);
+			_name = GetNumberString(input, pos);
+			return;
+		}
+		else if (isOpenBracket(input[pos])) {
+			_type = "OpenBracket";
+			_value = 0;
+			_name = input[pos];
+			return;
+		}
+		else if (isCloseBracket(input[pos])) {
+			_type = "CloseBracket";
+			_value = 0;
+			_name = input[pos];
+			return;
+		}
+		else if (input[pos] == '+' || input[pos] == '-') {
+			_type = "Operator";
+			_name = input[pos];
+			_value = 1;
+			return;
+		}
+		else if (input[pos] == '*' || input[pos] == '/') {
+			_type = "Operator";
+			_name = input[pos];
+			_value = 2;
+			return;
+		}
+		else if (input[pos] == '^') {
+			_type = "Operator";
+			_name = input[pos];
+			_value = 3;
+			return;
+		}
+		else if (input[pos] == '!') {
+			_type = "Factorial";
+			_name = input[pos];
+			_value = 4;
+			if (input.substr(pos, 2) == "!!") {
+				_name = "!!";
+			}
+			return;
+		}
+		std::string tmpstr = input.substr(pos, 2);
+		if (tmpstr == "tg" || tmpstr == "ln" || tmpstr == "sh" || tmpstr == "ch" || tmpstr == "th") {
+			_type = "Func";
+			_name = tmpstr;
+			_value = 4;
+			pos++;
+			return;
+		}
+		else {
+			tmpstr = input.substr(pos, 3);
+		}
+		if (tmpstr == "cos" || tmpstr == "sin" || tmpstr == "sqr" || tmpstr == "ctg" || tmpstr == "cth") {
+			_type = "Func";
+			_name = tmpstr;
+			_value = 4;
+			pos += 2;
+			return;
+		}
+		else {
+			tmpstr = input.substr(pos, 4);
+		}
+		if (tmpstr == "sqrt") {
+			_type = "Func";
+			_name = tmpstr;
+			_value = 4;
+			pos += 3;
+			return;
+		}
+		else {
+			tmpstr = input.substr(pos, 5);
+		}
+		if (tmpstr == "arctg" || tmpstr == "arcth" || tmpstr == "arcsh" || tmpstr == "arcsh") {
+			_type = "Func";
+			_name = tmpstr;
+			_value = 4;
+			pos += 4;
+			return;
+		}
+		else {
+			tmpstr = input.substr(pos, 6);
+		}
+		if (tmpstr == "arccos" || tmpstr == "arcsin" || tmpstr == "arcctg" || tmpstr == "arccth") {
+			_type = "Func";
+			_name = tmpstr;
+			_value = 4;
+			pos += 5;
+			return;
+		}
+		else if (isLetter(input[pos])) {
+			_type = "Varieble";
+			_name = input[pos];
+			_value = 0;
+			return;
+		}
+		throw std::logic_error("Not Lexem");
+	}
+	Lexem(float x) {
+		_type = "Number";
+		_name = x;
+		_value = x;
+	}
+	std::string type() { return _type; }
+	std::string name() { return _name; }
+	void val(float x) { _value = x; }
+	float val() { return _value; }
+};
+
+TVector<Lexem> GetLexems(std::string& input) {
 	delspace(input);
 	toUnarMinus(input);
 	ReplaceConstant(input);
 	if (!CorrectBrackets(input)) { throw std::logic_error("wrong brackets"); }
-	if(!isLetter(input[0]) && !isNumber(input[0]) && !isOpenBracket(input[0]) && input[0] != '~') { throw std::logic_error("wrong first element"); }
+	TVector<Lexem> lexems;
 	bool OpenBrFlag = true;
 	bool CloseBrFlag = false;
 	bool OperatorFlag = false;
 	bool DifFuncFlag = false;
 	bool OperandFlag = false;
 	bool FactFlag = false;
-	int pos = 0;
+	int i = 0;
 	do {
-		if (isOpenBracket(input[pos])) {
+		Lexem lex(input, i);
+		if (lex.type() == "OpenBracket") {
 			if (CloseBrFlag || OperandFlag || FactFlag) {
-				input.insert(pos, "*");
-				pos++;
+				input.insert(i, "*");
+				i++;
 			}
 			OpenBrFlag = true;
 			CloseBrFlag = false;
@@ -275,7 +316,7 @@ void CorrectForm(std::string& input) {
 			OperandFlag = false;
 			FactFlag = false;
 		}
-		else if (isCloseBracket(input[pos])) {
+		else if (lex.type() == "CloseBracket" && (FactFlag || OperandFlag || CloseBrFlag)) {
 			OpenBrFlag = false;
 			CloseBrFlag = true;
 			OperatorFlag = false;
@@ -283,37 +324,38 @@ void CorrectForm(std::string& input) {
 			OperandFlag = false;
 			FactFlag = false;
 		}
-		else if (isOperator(std::string(1, input[pos]))) {
-			if (input[pos] == '!') {
-				OpenBrFlag = false;
-				CloseBrFlag = false;
-				OperatorFlag = false;
-				DifFuncFlag = false;
-				OperandFlag = false;
-				FactFlag = true;
-			}
-			else {
-				OpenBrFlag = false;
-				CloseBrFlag = false;
-				OperatorFlag = true;
-				DifFuncFlag = false;
-				OperandFlag = false;
-				FactFlag = false;
-			}
-			
+		else if (lex.type() == "Operator" && (FactFlag || OperandFlag || CloseBrFlag || (lex.name()=="~" && OpenBrFlag))) {
+			OpenBrFlag = false;
+			CloseBrFlag = false;
+			OperatorFlag = true;
+			DifFuncFlag = false;
+			OperandFlag = false;
+			FactFlag = false;
 		}
-		else if (isLetter(input[pos])) {
-			if(CloseBrFlag || FactFlag || OperandFlag) {
-				input.insert(pos, "*");
-				pos++;
+		else if (lex.type() == "Factorial" && (OperandFlag || CloseBrFlag)) {
+			OpenBrFlag = false;
+			CloseBrFlag = false;
+			OperatorFlag = false;
+			DifFuncFlag = false;
+			OperandFlag = false;
+			FactFlag = true;
+		}
+		else if (lex.type() == "Func") {
+			if (CloseBrFlag || OperandFlag || FactFlag) {
+				input.insert(i, "*");
+				i++;
 			}
-			if (isDifFunc(GetOperator(input, pos))) {
-				OpenBrFlag = false;
-				CloseBrFlag = false;
-				OperatorFlag = false;
-				DifFuncFlag = true;
-				OperandFlag = false;
-				FactFlag = false;
+			OpenBrFlag = false;
+			CloseBrFlag = false;
+			OperatorFlag = false;
+			DifFuncFlag = true;
+			OperandFlag = false;
+			FactFlag = false;
+		}
+		else if (lex.type() == "Varieble" || lex.type() == "Number") {
+			if (CloseBrFlag || FactFlag || OperandFlag) {
+				input.insert(i, "*");
+				i++;
 			}
 			else {
 				OpenBrFlag = false;
@@ -323,64 +365,40 @@ void CorrectForm(std::string& input) {
 				OperandFlag = true;
 				FactFlag = false;
 			}
-			
+
 		}
-		else if (isNumber(input[pos])) {
-			if (CloseBrFlag || FactFlag || OperandFlag) {
-				input.insert(pos, "*");
-				pos++;
-			}
-			OpenBrFlag = false;
-			CloseBrFlag = false;
-			OperatorFlag = false;
-			DifFuncFlag = false;
-			OperandFlag = true;
-			FactFlag = false;
-			GetNumberString(input, pos);
-		}
-		else { throw std::logic_error("Invalid syntax pos: " + pos); }
-		pos++;
-	} while (pos != input.length());
+		else { throw std::logic_error("Invalid syntax pos: " + i); }
+		lexems.append(lex);
+		i++;
+	} while (i != input.length());
+	return lexems;
 }
 
-std::string toRPN(std::string& input) {
-	CorrectForm(input);
-	std::string res;
-	StackOnList<std::string> operators;
-	for (int pos = 0; pos < input.length(); pos++) {
-		if (isNumber(input[pos])) { res = res + GetNumberString(input, pos) + ' '; }
-		else if (isOpenBracket(input[pos])) { operators.push(std::string(1, input[pos])); }
-		else if (isCloseBracket(input[pos])) {
-			while (!isOpenBracket(operators.top()[0])) {
-				res = res + operators.top() + ' ';
-				operators.pop();
+TVector<Lexem> toRPN(std::string& input) {
+	TVector<Lexem> expression(GetLexems(input));
+	TVector<Lexem> res;
+	StackOnList<Lexem> operators;
+	int i = 0;
+	while (i < expression.size()) {
+		Lexem lex(expression[i]);
+		if (lex.type() == "Number" || lex.type() == "Varieble") { res.append(lex); }
+		else if (lex.type() == "OpenBracket") { operators.push(lex); }
+		else if (lex.type() == "CloseBracket") {
+			while (!(operators.top().type() == "OpenBracket")) {
+				res.append(operators.pop());
 			}
 			operators.pop();
 		}
-		else if (isLetter(input[pos])) {
-			std::string tmp = GetOperator(input, pos);
-			if (tmp == "Not") { res = res + input[pos] + ' '; }
-			else { 
-				while (!operators.empty() && Dict[operators.top()] >= Dict[tmp])
-				{
-					res = res + operators.top() + ' ';
-					operators.pop();
-				}
-				operators.push(tmp);
-			}
-		}
-		else if (isOperator(std::string(1, input[pos]))) {
-			while (!operators.empty() && Dict[operators.top()] >= Dict[std::string(1, input[pos])])
+		else if (lex.type() == "Func" || lex.type() == "Factorial") {
+			while (!operators.empty() && operators.top().val() >= lex.val())
 			{
-				res = res + operators.top() + ' ';
-				operators.pop();
+				res.append(operators.pop());
 			}
-			operators.push(std::string(1, input[pos]));
+			operators.push(lex);
 		}
 	}
 	while (!operators.empty()) {
-		res = res + operators.top() + ' ';
-		operators.pop();
+		res.append(operators.pop());
 	}
 	return res;
 }
@@ -426,32 +444,29 @@ void funcdef(StackOnList<float>& stack, std::string operation) {
 
 }
 
-std::string GetVar() {
-	std::string res;
-	std::cin >> res;
-	return res;
+void GetSetVar(TVector<Lexem> input) {
+	for (Lexem lex : input) {
+		if (lex.type() == "Varieble") {
+			std::cout << lex.name() << " ";
+			float x;
+			std::cin >> x;
+			lex.val(x);
+		}
+	}
 }
 
 float Calculate(std::string _input) {
-	std::string input = toRPN(_input);
+	TVector<Lexem> expressions(toRPN(_input));
 	StackOnList<float> numbers;
-	while (input.find(' ') != std::string::npos) {
-		int pos = 0;
-		std::string tmp = input.substr(0, input.find(' '));
-		input.erase(0, input.find(' ') + 1);
-		if (isNumber(tmp[0])) {
-			numbers.push(GetNumberFloat(tmp, pos));
+	//TVector<TPair<std::string, float>> vars;
+	int i = 0;
+	while (i < expressions.size()) {
+		Lexem lex(expressions[i]);
+		if (lex.type() == "Number" || lex.type() == "Varieble") {
+			numbers.push(lex.val());
 		}
 		else {
-			std::string operation = GetOperator(tmp, pos);
-			if (operation == "Not") {
-				std::string var = GetVar();
-				ReplaceVar(input, tmp, var);
-				numbers.push(GetNumberFloat(var, pos));
-			}
-			else {
-				funcdef(numbers, operation);
-			}
+			funcdef(numbers, lex.name());
 		}
 	}
 	return numbers.top();

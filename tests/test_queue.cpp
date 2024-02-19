@@ -77,62 +77,57 @@ TEST(test_TQueue, correct_pop) {
 	EXPECT_EQ(st.back(), 6);
 }
 
-//TEST(test_TQueueOnList, can_create) {
-//	ASSERT_NO_THROW(StackOnList<int> t);
-//}
-//
-//TEST(test_TQueueOnList, can_create_mass) {
-//	int data[7];
-//	ASSERT_NO_THROW(StackOnList<int> t(data, 7));
-//}
-//
-//TEST(test_TQueueOnList, can_push_elem) {
-//	StackOnList<int> st;
-//	ASSERT_NO_THROW(st.push(8));
-//}
-//
-//TEST(test_TQueueOnList, correct_isEmpty) {
-//	StackOnList<int> st1;
-//	StackOnList<int> st2;
-//	st2.push(8);
-//	StackOnList<int> st3;
-//	st3.push(7);
-//	st3.pop();
-//	EXPECT_EQ(st1.empty(), true);
-//	EXPECT_EQ(st2.empty(), false);
-//	EXPECT_EQ(st3.empty(), true);
-//}
-//
-//TEST(test_TQueueOnList, can_return_top) {
-//	StackOnList<int> st;
-//	st.push(1);
-//	st.push(2);
-//	st.push(3);
-//	st.push(8);
-//	EXPECT_EQ(st.top(), 8);
-//}
-//
-//TEST(test_TQueueOnList, cant_return_top_empty) {
-//	StackOnList<int> st;
-//	ASSERT_ANY_THROW(st.top());
-//}
-//
-//TEST(test_TQueueOnList, can_pop) {
-//	StackOnList<int> st;
-//	st.push(8);
-//	ASSERT_NO_THROW(st.pop());
-//}
-//
-//TEST(test_TQueueOnList, can_pop_empty) {
-//	StackOnList<int> st;
-//	ASSERT_NO_THROW(st.pop());
-//}
-//
-//TEST(test_TQueueOnList, correct_pop) {
-//	StackOnList<int> st;
-//	st.push(8);
-//	st.push(7);
-//	st.pop();
-//	EXPECT_EQ(st.top(), 8);
-//	EXPECT_EQ(st.size(), 1);
-//}
+TEST(test_TQueueOnList, can_create) {
+	ASSERT_NO_THROW(TQueueOnList<int> t);
+}
+
+TEST(test_TQueueOnList, can_push_elem) {
+	TQueueOnList<int> st;
+	ASSERT_NO_THROW(st.push(8));
+}
+
+TEST(test_TQueueOnList, correct_isEmpty) {
+	TQueueOnList<int> st1;
+	TQueueOnList<int> st2;
+	st2.push(8);
+	TQueueOnList<int> st3;
+	st3.push(7);
+	st3.pop();
+	EXPECT_EQ(st1.empty(), true);
+	EXPECT_EQ(st2.empty(), false);
+	EXPECT_EQ(st3.empty(), true);
+}
+
+TEST(test_TQueueOnList, can_return_top) {
+	TQueueOnList<int> st;
+	st.push(1);
+	st.push(2);
+	st.push(3);
+	st.push(8);
+	EXPECT_EQ(st.back(), 8);
+}
+
+TEST(test_TQueueOnList, cant_return_top_empty) {
+	TQueueOnList<int> st;
+	ASSERT_ANY_THROW(st.front());
+}
+
+TEST(test_TQueueOnList, can_pop) {
+	TQueueOnList<int> st;
+	st.push(8);
+	ASSERT_NO_THROW(st.pop());
+}
+
+TEST(test_TQueueOnList, cant_pop_empty) {
+	TQueueOnList<int> st;
+	ASSERT_ANY_THROW(st.pop());
+}
+
+TEST(test_TQueueOnList, correct_pop) {
+	TQueueOnList<int> st;
+	st.push(8);
+	st.push(7);
+	st.pop();
+	EXPECT_EQ(st.back(), 7);
+	EXPECT_EQ(st.size(), 1);
+}

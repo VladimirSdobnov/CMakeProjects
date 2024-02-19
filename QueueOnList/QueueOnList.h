@@ -1,3 +1,4 @@
+#pragma once
 #include "../List/list.h">
 
 template <class T>
@@ -19,8 +20,10 @@ public:
 	void push(const T& elem) {
 		list.push_back(elem);
 	}
-	void pop() {
+	T pop() {
 		if (empty()) { throw std::logic_error("Queue is empty"); }
+		T res = list.front();
 		list.pop_front();
+		return res;
 	}
 };

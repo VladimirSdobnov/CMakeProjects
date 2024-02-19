@@ -1,3 +1,4 @@
+#pragma once
 #include "ParsAlgorithm.h"
 #include <gtest.h>
 
@@ -44,7 +45,7 @@ TEST(Algorithm, can_string_to_double) {
 	int pos = 0;
 	double x = 0.0000056;
 	EXPECT_FLOAT_EQ(x, GetNumberFloat(st1, pos));
-	EXPECT_EQ(pos, 9);
+	EXPECT_EQ(pos, 8);
 	pos = 0;
 	x = 23.03402;
 	EXPECT_FLOAT_EQ(x, GetNumberFloat(st2, pos));
@@ -58,123 +59,80 @@ TEST(Algorithm, can_string_to_double) {
 	EXPECT_FLOAT_EQ(x, GetNumberFloat(st5, pos));
 }
 
-TEST(Algorithm, can_coorect_form) {
-	std::string st1 = "6ar";
-	std::string res;
-	std::string st2 = "arcsinst";
-	std::string st3 = "arcthqe";
-	std::string st4 = "aarcsin";
-	std::string st5 = "aarcsincostgcthxert";
-	std::string st6 = "a(arcsin(costgc)thxert)";
-	std::string st7 = "a+arcsincos(tgc+thx)ert";
-	std::string st8 = "a.arcsin,cos(tgc+thx)ert";
-	CorrectForm(st1);
-	res = "6*a*r";
-	EXPECT_EQ(res, st1);
-	CorrectForm(st2);
-	res = "arcsins*t";
-	EXPECT_EQ(res, st2);
-	CorrectForm(st3);
-	res = "arcthq*2.718";
-	EXPECT_EQ(res, st3);
-	CorrectForm(st4);
-	res = "a*arcsin";
-	EXPECT_EQ(res, st4);
-	res = "a*arcsincostgcthx*2.718*r*t";
-	CorrectForm(st5);
-	EXPECT_EQ(res, st5);
-	res = "a*(arcsin(costgc)*thx*2.718*r*t)";
-	CorrectForm(st6);
-	EXPECT_EQ(res, st6);
-	res = "a+arcsincos(tgc+thx)*2.718*r*t";
-	CorrectForm(st7);
-	EXPECT_EQ(res, st7);
-	EXPECT_ANY_THROW(CorrectForm(st8));
-
-}
-
-TEST(Algorithm, can_coorect_form2) {
-	std::string st1 = "-6ar";
-	std::string res;
-	std::string st2 = "arcsin{st}";
-	std::string st3 = "5 + 6 ( -4 + 3)";
-	std::string st4 = "a\rcsin";
-	std::string st5 = "5+6(-4+3arcsinx)-34^yx";
-	CorrectForm(st1);
-	res = "~6*a*r";
-	EXPECT_EQ(res, st1);
-	CorrectForm(st2);
-	res = "arcsin{s*t}";
-	EXPECT_EQ(res, st2);
-	delspace(st3);
-	CorrectForm(st3);
-	res = "5+6*(~4+3)";
-	EXPECT_EQ(res, st3);
-	EXPECT_ANY_THROW(CorrectForm(st4));
-	res = "5+6*(~4+3*arcsinx)-34^y*x";
-	CorrectForm(st5);
-	EXPECT_EQ(res, st5);
-	res = "arcsin";
-}
-
-TEST(Algorithm, can_get_string) {
-	std::string st1 = "arcsin";
-	std::string st2 = "cosxert";
-	std::string st3 = "erty";
-	std::string st4 = "qwe+";
-	std::string st5 = "s4";
-	std::string st6 = "sinarcsin";
+TEST(Algorithm, can_lexem) {
+	std::string st1 = "0.056";
+	std::string st2 = "x";
+	std::string st3 = "+";
+	std::string st4 = "arcsin";
+	std::string st5 = "arsin";
+	std::string st6 = " arcsin";
+	std::string st7 = "(";
+	std::string st8 = ")";
 	int pos = 0;
-	std::string res("arcsin");
-	EXPECT_EQ(res, GetOperator(st1, pos));
-	EXPECT_EQ(pos, 5);
+	Lexem lex(st1, pos);
+	EXPECT_EQ("Number", lex.type());
+	EXPECT_EQ(4, pos);
+	EXPECT_FLOAT_EQ(0.056, lex.val());
+	EXPECT_EQ("0.056", lex.name());
 	pos = 0;
-	res = "cos";
-	EXPECT_EQ(res, GetOperator(st2, pos));
-	EXPECT_EQ(pos, 2);
-	pos = 0;
-	res = "Not";
-	EXPECT_EQ(res, GetOperator(st3, pos));
+	Lexem lex2(st2, pos);
+	EXPECT_EQ("Varieble", lex2.type());
 	EXPECT_EQ(0, pos);
+	EXPECT_FLOAT_EQ(0, lex2.val());
+	EXPECT_EQ("x", lex2.name());
 	pos = 0;
-	res = "Not";
-	EXPECT_EQ(res, GetOperator(st4, pos));
+	Lexem lex3(st3, pos);
+	EXPECT_EQ("Operator", lex3.type());
 	EXPECT_EQ(0, pos);
+	EXPECT_FLOAT_EQ(1, lex3.val());
+	EXPECT_EQ("+", lex3.name());
 	pos = 0;
-	res = "Not";
-	EXPECT_EQ(res, GetOperator(st5, pos));
+	Lexem lex4(st4, pos);
+	EXPECT_EQ("Func", lex4.type());
+	EXPECT_EQ(5, pos);
+	EXPECT_FLOAT_EQ(4, lex4.val());
+	EXPECT_EQ("arcsin", lex4.name());
 	pos = 0;
-	res = "sin";
-	EXPECT_EQ(res, GetOperator(st6, pos));
+	Lexem lex5(st5, pos);
+	EXPECT_EQ("Varieble", lex5.type());
+	EXPECT_EQ(0, pos);
+	EXPECT_FLOAT_EQ(0, lex5.val());
+	EXPECT_EQ("a", lex5.name());
+	pos = 0;
+	EXPECT_ANY_THROW(Lexem lex6(st6, pos));
+	pos = 0;
+	Lexem lex7(st7, pos);
+	EXPECT_EQ("OpenBracket", lex7.type());
+	EXPECT_EQ(0, pos);
+	EXPECT_FLOAT_EQ(0, lex7.val());
+	EXPECT_EQ("(", lex7.name());
+	pos = 0;
+	Lexem lex8(st8, pos);
+	EXPECT_EQ("CloseBracket", lex8.type());
+	EXPECT_EQ(0, pos);
+	EXPECT_FLOAT_EQ(0, lex8.val());
+	EXPECT_EQ(")", lex8.name());
 }
 
-TEST(Algorithm, can_get_RPN) {
-	std::string res;
-	std::string st = "3 + 4";
-	res = "3 4 + ";
-	EXPECT_EQ(res, toRPN(st));
-	st = "arcsin5";
-	res = "5 arcsin ";
-	EXPECT_EQ(res, toRPN(st));
-	st = "(arcsin(6 * 7))^5 - 5 + xy";
-	res = "6 7 * arcsin 5 ^ 5 - x y * + ";
-	EXPECT_EQ(res, toRPN(st));
-	std::cout << st;
+TEST(Algorithm, can_get_lex) {
+	std::string st1 = "0.056+x";
+	TVector<Lexem> q(GetLexems(st1));
+	EXPECT_EQ("Number", q[0].type());
+	EXPECT_FLOAT_EQ(0.056, q[0].val());
+	EXPECT_EQ("0.056", q[0].name());
+
+	EXPECT_EQ("Operator", q[1].type());
+	EXPECT_FLOAT_EQ(1, q[1].val());
+	EXPECT_EQ("+", q[1].name());
+
+	EXPECT_EQ("Varieble", q[2].type());
+	EXPECT_FLOAT_EQ(0, q[2].val());
+	EXPECT_EQ("x", q[2].name());
+
+	std::string st2 = "arcth+";
+	EXPECT_ANY_THROW(GetLexems(st2));
 }
 
-TEST(Algorithm, can_replace) {
-	std::string st1 = "pi*e*e*34";
-	ReplaceConstant(st1);
-	EXPECT_EQ("3.142*2.718*2.718*34", st1);
-}
-
-TEST(Algorithm, can_calculate) {
-	std::string st1 = "3 * 2 + (34 - 2) / 2 ^ 3";
-	float res = Calculate(st1);
-	EXPECT_FLOAT_EQ(10, res);
-	std::string st2;
-	std::cin >> st2;
-	float x;
-	x = Calculate(st2);
-	std::cout << "\n" << x;
+TEST(Algorithm, can_RPN) {
+	std::string st1 = "";
 }
