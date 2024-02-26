@@ -134,5 +134,50 @@ TEST(Algorithm, can_get_lex) {
 }
 
 TEST(Algorithm, can_RPN) {
-	std::string st1 = "";
+	std::string st1 = "12+3*4-2";
+	TVector<Lexem> res(toRPN(st1));
+	EXPECT_EQ(res[0].name(), "12");
+	EXPECT_EQ(res[1].name(), "3");
+	EXPECT_EQ(res[2].name(), "4");
+	EXPECT_EQ(res[3].name(), "*");
+	EXPECT_EQ(res[4].name(), "+");
+	EXPECT_EQ(res[5].name(), "2");
+	EXPECT_EQ(res[6].name(), "-");
+	std::string st2 = "12+sin3*4-2";
+	TVector<Lexem> res2(toRPN(st2));
+	EXPECT_EQ(res2[0].name(), "12");
+	EXPECT_EQ(res2[1].name(), "3");
+	EXPECT_EQ(res2[2].name(), "sin");
+	EXPECT_EQ(res2[3].name(), "4");
+	EXPECT_EQ(res2[4].name(), "*");
+	EXPECT_EQ(res2[5].name(), "+");
+	EXPECT_EQ(res2[6].name(), "2");
+	EXPECT_EQ(res2[7].name(), "-");
+	std::string st3 = "4(x^3)(y^2)";
+	TVector<Lexem> res3(toRPN(st3));
+	EXPECT_EQ(res3[0].name(), "4");
+	EXPECT_EQ(res3[1].name(), "x");
+	EXPECT_EQ(res3[2].name(), "3");
+	EXPECT_EQ(res3[3].name(), "^");
+	EXPECT_EQ(res3[4].name(), "*");
+	EXPECT_EQ(res3[5].name(), "y");
+	EXPECT_EQ(res3[6].name(), "2");
+	EXPECT_EQ(res3[7].name(), "^");
+	EXPECT_EQ(res3[8].name(), "*");
+	std::string st4 = "4(x^3)(y^2)(z^(-4))";
+	TVector<Lexem> res4(toRPN(st4));
+	EXPECT_EQ(res4[0].name(), "4");
+	EXPECT_EQ(res4[1].name(), "x");
+	EXPECT_EQ(res4[2].name(), "3");
+	EXPECT_EQ(res4[3].name(), "^");
+	EXPECT_EQ(res4[4].name(), "*");
+	EXPECT_EQ(res4[5].name(), "y");
+	EXPECT_EQ(res4[6].name(), "2");
+	EXPECT_EQ(res4[7].name(), "^");
+	EXPECT_EQ(res4[8].name(), "*");
+	EXPECT_EQ(res4[9].name(), "z");
+	EXPECT_EQ(res4[10].name(), "4");
+	EXPECT_EQ(res4[11].name(), "~");
+	EXPECT_EQ(res4[12].name(), "^");
+	EXPECT_EQ(res4[13].name(), "*");
 }

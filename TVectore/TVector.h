@@ -59,14 +59,14 @@ public:
 };
 
 template <class T>
-class ForwardIterator : public InIterator<T>, public OutIterator<T>, 
+class ForwardIterator : public OutIterator<T>, 
     public std::iterator<std::forward_iterator_tag, T> {
     friend class TVector<T>;
 protected:
     using OutIterator<T>::p;
-    ForwardIterator(T* _p) : InIterator<T>(_p), OutIterator<T>(_p) {};
+    ForwardIterator(T* _p) : OutIterator<T>(_p) {};
 public:
-    ForwardIterator(const ForwardIterator& it) : InIterator<T>(it.p), OutIterator<T>(it.p) {};
+    ForwardIterator(const ForwardIterator& it) : OutIterator<T>(it.p) {};
     using OutIterator<T>::operator*;
     using OutIterator<T>::operator++;
     using OutIterator<T>::operator==;
@@ -339,6 +339,6 @@ ForwardIterator<T>& find(ForwardIterator<T> begin, ForwardIterator<T> end, const
         if (*begin == elem) return begin;
         begin++;
     }
-    throw std::bad_alloc();
+    return nullptr;
 }
 
