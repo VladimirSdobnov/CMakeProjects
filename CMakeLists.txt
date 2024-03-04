@@ -18,6 +18,7 @@ add_subdirectory(ParsAlgorithm)
 add_subdirectory(StackOnList)
 add_subdirectory(Polinoms)
 add_subdirectory(TVectore)
+add_subdirectory(Table)
 
 add_subdirectory(List)   # подключаем дополнительный CMakeLists.txt из подкаталога с именем lib_example
 add_subdirectory(main)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем main

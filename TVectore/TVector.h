@@ -289,6 +289,17 @@ public:
         *this = tmp;
     }
 
+    void erase(int i) {
+		if (i < 0 || i >= _size) { throw std::out_of_range("Index out of range"); }
+		TVector<T> tmp(_size - 1);
+        InIterator<T> it = begin_in();
+        for (int x = 0; x < i; x++) { ++it; }
+		std::copy(begin_in(), it, tmp.pMem);
+        ++it;
+		std::copy(it, end_in(), tmp.pMem + i);
+		*this = tmp;
+    }
+
     friend void swap <T>(TVector& lhs, TVector& rhs) noexcept;
 
     // ввод/вывод
@@ -334,11 +345,21 @@ size_t count(ForwardIterator<T> begin, ForwardIterator<T> end, const T& elem) {
 }
 
 template <class T>
-ForwardIterator<T>& find(ForwardIterator<T> begin, ForwardIterator<T> end, const T& elem) {
+ForwardIterator<T>* find(ForwardIterator<T> begin, ForwardIterator<T> end, const T& elem) {
     while (begin != end) {
-        if (*begin == elem) return begin;
+        if (*begin == elem) return &begin;
         begin++;
     }
     return nullptr;
 }
 
+template <class T>
+int* find_pos(ForwardIterator<T> begin, ForwardIterator<T> end, const T& elem) {
+    int tmp = 0;
+    while (begin != end) {
+        if (*begin == elem) return &tmp;
+        tmp++;
+        begin++;
+    }
+    return nullptr;
+}

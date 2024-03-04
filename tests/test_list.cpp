@@ -1,5 +1,32 @@
-//#include <gtest.h>
-//#include "list.h"
+#include <gtest.h>
+#include "list.h"
+#include <iostream>
+
+
+TEST(test_list_iter, can_work) {
+	TList<int> list;
+	for (int i = 0; i < 10; i++) {
+		list.push_back(i);
+	}
+	for (auto elem : list) {
+		elem.data() *= 10;
+		std::cout << elem.data() << " ";
+	}
+	std::cout << std::endl;
+	for (auto elem : list) {
+		std::cout << elem.data() << " ";
+	}
+}
+
+TEST(test_list_iter, can_find) {
+	TList<int> list;
+	for (int i = 0; i < 10; i++) {
+		list.push_back(i);
+	}
+	EXPECT_NO_THROW(find<int>(list.begin(), list.end(), 5));
+	EXPECT_NE(nullptr, find<int>(list.begin(), list.end(), 5));
+}
+
 //
 //TEST(test_TNode, can_create) {
 //	// Arrange
