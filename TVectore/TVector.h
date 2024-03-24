@@ -215,6 +215,12 @@ public:
     }
 
     // сравнение
+    bool operator==(const T& elem) const noexcept {
+        for (auto i = 0; i != _count; i++) {
+            if (pMem[i] != elem) { return false; }
+        }
+        return true;
+    }
     bool operator==(const TVector& v) const noexcept {
         if (_count != v._count) { return false; }
         for (int i = 0; i < _count; i++) { if (pMem[i] != v.pMem[i]) { return false; } }

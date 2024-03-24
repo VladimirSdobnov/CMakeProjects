@@ -85,6 +85,8 @@ public:
 	}
 	bool operator>(const Monom& m) const noexcept {
 		if (powers == m.powers) { throw std::logic_error("Different powers"); }
+		if (m.powers == 0 && powers == 0) { return false; }
+		else if (m.powers == 0) { return true; }
 		for (int i = 0; i < powers.size(); i++) {
 			if (powers[i] > m.powers[i]) { return true; }
 			if (powers[i] < m.powers[i]) { return false; }
@@ -93,6 +95,7 @@ public:
 	}
 	bool operator<(const Monom& m) const noexcept {
 		if (powers == m.powers) { throw std::logic_error("Different powers"); }
+		if (m.powers == 0) { return false; }
 		for (int i = 0; i < powers.size(); i++) {
 			if (powers[i] > m.powers[i]) { return false; }
 			if (powers[i] < m.powers[i]) { return true; }
@@ -305,13 +308,23 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& ostr, Polinom& p) {
+	int k = 0;
 	for (auto elem : p.monoms) {
 		if (elem.coefficient != 0) {
-			ostr << elem.coefficient;
+			if (elem.coefficient > 0) {
+				if (k != 0) ostr << " + ";
+				if (elem.coefficient != 1) ostr << elem.coefficient;
+			}
+			else if (elem.coefficient < 0) {
+				if (k != 0) ostr << " - ";
+				if (elem.coefficient != -1) ostr << -elem.coefficient;
+				
+			}
+			else { continue; }
 			for (int i = 0; i < elem.powers.size(); i++) {
 				if (elem.powers[i] != 0) ostr << p.variebles[i].name() << "^" << elem.powers[i];
 			}
-			ostr << " + ";
+			k++;
 		}
 	}
 	return ostr;
