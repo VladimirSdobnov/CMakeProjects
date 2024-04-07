@@ -220,32 +220,32 @@
 //	cur = cur->next();
 //	EXPECT_EQ(cur->data().name(), "*");
 //}
-
-TEST(test_Polinom, can_create) {
-	Polinom pol;
-	Polinom pol2(std::string("12x1^4x2^5x3^-2"));
-	Polinom pol3(std::string("-x2^3x2^4+ + 5 + x1^4x3^-2+x3^-2+x4^6 +5x2^7 + 8"));
-	Polinom res;
-	std::cout << pol3 << std::endl;
-}
-
-TEST(test_Polinom, can_summ) {
-	std::string tmp = "x1 x2 x3 x4 x5 x6 x7 x8";
-	TVector<Lexem> vars = GetVars(tmp);
-	Polinom pol2(std::string("12x1^4x2^5x3^-2 - 5x1^4x3^-2"), vars);
-	Polinom pol3(std::string("-x2^3x2^4 + 5 + x1^4x3^-2 + x3^-2 + x4^6 + 5x2^7 + 8"), vars);
-	Polinom res = pol2 + pol3;
-	std::cout << res << std::endl;
-}
-
-TEST(test_Polinom, can_mult) {
-	std::string tmp = "x1 x2 x3";
-	TVector<Lexem> vars = GetVars(tmp);
-	Polinom pol2(std::string("x1^2x2^3"), vars);
-	Polinom pol3(std::string("-x1^2 + x2^-3"), vars);
-	Polinom res = pol2 * pol3;
-	std::cout << res << std::endl;
-}
+//
+//TEST(test_Polinom, can_create) {
+//	Polinom pol;
+//	Polinom pol2(std::string("12x1^4x2^5x3^-2"));
+//	Polinom pol3(std::string("-x2^3x2^4+ + 5 + x1^4x3^-2+x3^-2+x4^6 +5x2^7 + 8"));
+//	Polinom res;
+//	std::cout << pol3 << std::endl;
+//}
+//
+//TEST(test_Polinom, can_summ) {
+//	std::string tmp = "x1 x2 x3 x4 x5 x6 x7 x8";
+//	TVector<Lexem> vars = GetVars(tmp);
+//	Polinom pol2(std::string("12x1^4x2^5x3^-2 - 5x1^4x3^-2"), vars);
+//	Polinom pol3(std::string("-x2^3x2^4 + 5 + x1^4x3^-2 + x3^-2 + x4^6 + 5x2^7 + 8"), vars);
+//	Polinom res = pol2 + pol3;
+//	std::cout << res << std::endl;
+//}
+//
+//TEST(test_Polinom, can_mult) {
+//	std::string tmp = "x1 x2 x3";
+//	TVector<Lexem> vars = GetVars(tmp);
+//	Polinom pol2(std::string("x1^2x2^3"), vars);
+//	Polinom pol3(std::string("-x1^2 + x2^-3"), vars);
+//	Polinom res = pol2 * pol3;
+//	std::cout << res << std::endl;
+//}
 
 
 

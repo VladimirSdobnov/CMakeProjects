@@ -1,5 +1,6 @@
 #include <../BinarTree/BinarTree.h>
 #include <../gtest/gtest.h>
+#include <../RBBinarTree/RBBinarTree.h>
 
 TEST(Tree_test, can_create) {
 	TBinarTree<int> tree;
@@ -74,19 +75,36 @@ TEST(SearchTree_test, can_insert) {
 	std::cout << tree.find(3)->data();
 	std::cout << tree.find(4)->data();
 	std::cout << tree.find(5)->data() << std::endl;
-	/*printtreeBFS<int>(tree);
+	printtreeBFS<int>(tree);
 	std::cout << std::endl;
-	printtreeDFSUP<int>(tree.root);
-	std::cout << std::endl;
-	printtreeDFSDOWNUP<int>(tree.root);
-	std::cout << std::endl;
-	printtreeDFSDOWNDOWN<int>(tree.root);
-	std::cout << std::endl;*/
 	tree.erase(-5);
 	tree.erase(-4);
 	tree.erase(5);
 	tree.erase(0);
 	tree.erase(4);
 	tree.erase(3);
+	printtreeBFS<int>(tree);
+	std::cout << std::endl;
+}
+
+TEST(RBTree_test, can_insert) {
+	RBTree<int> tree;
+	for (int i = 6; i > -1; i--) {
+		tree.insert(i * 5);
+	}
+
+	RBTree<int> tree2;
+	for (int i = 0; i < 7; i++) {
+		tree2.insert(i * 5);
+	}
+	srand(time(0));
+	RBTree<int> tree3;
+	
+	for (int i = 0; i < 10; i++) {
+		int x = rand() % 100;
+
+		tree3.insert(x);
+	}
+
 }
 

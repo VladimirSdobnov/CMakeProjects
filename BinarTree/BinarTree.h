@@ -52,7 +52,7 @@ private:
 		if (!*exit_flag) { res = find_pred(val, cur->_right, exit_flag, res); }
 		return res;
 	}
-	
+
 public:
 	TNodeTree<T>* root;
 	TBinarTree() { root = nullptr; }
@@ -101,13 +101,13 @@ public:
 		else { tmp->_right = newnode; }
 	}
 
-	TNodeTree<T>* find_last(){
+	TNodeTree<T>* find_last() {
 		TQueueOnList<TNodeTree<T>*> verts;
 		verts.push(root);
 		TNodeTree<T>* tmp = root;
-		while (tmp->_left != nullptr && tmp->_right != nullptr) {
-			verts.push(tmp->_left);
-			verts.push(tmp->_right);
+		while (tmp->_left != nullptr || tmp->_right != nullptr) {
+			if (tmp->_left != nullptr) verts.push(tmp->_left);
+			if (tmp->_right != nullptr) verts.push(tmp->_right);
 			verts.pop();
 			tmp = verts.front();
 		}
@@ -123,7 +123,7 @@ public:
 		TNodeTree<T>* res = nullptr;
 		return find(val, cur, exit_flag, res);
 	}
-	
+
 	TNodeTree<T>* find_pred(TNodeTree<T>* val) {
 		TNodeTree<T>* cur = root;
 		bool* exit_flag = new bool(false);
@@ -149,7 +149,7 @@ public:
 			else { pred->_right->_data = replacement->data(); }
 		}
 		pred = find_pred(replacement);
-		if (pred->left() == Node) { pred->_left = nullptr; }
+		if (pred->left() == replacement) { pred->_left = nullptr; }
 		else { pred->_right = nullptr; }
 	}
 };
@@ -274,7 +274,7 @@ public:
 		res = find_ins_pos(data, cur, exit_flag, res);
 		if (res == nullptr) { return; }
 		if (data < res->data()) { res->_left = new TNodeTree<T>(data); }
-		else if(data > res->data()) { res->_right = new TNodeTree<T>(data); }
+		else if (data > res->data()) { res->_right = new TNodeTree<T>(data); }
 	}
 	TNodeTree<T>* find(const T& val) {
 		TNodeTree<T>* cur = root;
@@ -290,26 +290,66 @@ public:
 	}
 	void erase(const T& val) {
 		TNodeTree<T>* tmp = find(val);
+
+		if (tmp == root) {
+			if (tmp->_left == nullptr && tmp->_right == nullptr) { root = nullptr; return; }
+			if (tmp->_left == nullptr) { root = tmp->_right; return; }
+			if (tmp->_right == nullptr) { root = tmp->_left; return; }
+			TNodeTree<T>* replacement = find_max(tmp->_left);
+			TNodeTree<T>* pred_rep = find_pred(replacement);
+			if (pred_rep == tmp) { replacement->_right = root->_right; root = replacement; return; }
+			if (replacement != tmp->_left) replacement->_left = tmp->_left;
+			if (replacement != tmp->_right)replacement->_right = tmp->_right;
+			if (replacement == pred_rep->_left) { pred_rep->_left = nullptr; }
+			if (replacement == pred_rep->_right) { pred_rep->_right = nullptr; }
+			root = replacement;
+			return;
+		}
+
+
 		if (tmp == nullptr) { return; }
 		if (tmp->_left == nullptr && tmp->_right == nullptr) {
 			TNodeTree<T>* pred = find_pred(tmp);
 			if (tmp == pred->_left) { pred->_left = nullptr; return; }
 			if (tmp == pred->_right) { pred->_right = nullptr; return; }
 		}
-		if (tmp->_left == nullptr) {
+		if (tmp->_left == nullptr || tmp->_right == nullptr) {
 			TNodeTree<T>* pred = find_pred(tmp);
-			if (tmp == pred->_left) { pred->_left = tmp->_right; return; }
-			if (tmp == pred->_right) { pred->_right = tmp->_right; return; }
-		}
-		if (tmp->_right == nullptr) {
-			TNodeTree<T>* pred = find_pred(tmp);
-			if (tmp == pred->_left) { pred->_left = tmp->_left; return; }
-			if (tmp == pred->_right) { pred->_right = tmp->_left; return; }
+			if (tmp == pred->_left) { pred->_left = tmp->_right;
+			return; }
+			if (tmp == pred->_right) { pred->_right = tmp->_left;
+			return; }
 		}
 		TNodeTree<T>* replacement = find_max(tmp->_left);
-		TNodeTree<T>* pred = find_pred(replacement);
-		tmp->_data = replacement->data();
-		if (replacement == pred->_left) { pred->_left = nullptr; return; }
-		if (replacement == pred->_right) { pred->_right = nullptr; return; }
+		TNodeTree<T>* pred = find_pred(tmp);
+		TNodeTree<T>* pred_rep = find_pred(replacement);
+		if (tmp == pred->_left) {
+			pred->_left = replacement;
+		}
+		if (tmp == pred->_right) {
+			pred->_right = replacement;
+		}
+		if (replacement != tmp->_left) replacement->_left = tmp->_left;
+		if (replacement != tmp->_right) replacement->_right = tmp->_right;
+		if (replacement == pred_rep->_left) { pred_rep->_left = nullptr; }
+		if (replacement == pred_rep->_right) { pred_rep->_right = nullptr; }
+		return;
 	}
 };
+
+template <class T>
+void printtreeBFS(const TSearchTree<T>& tree) {
+	TQueueOnList<TNodeTree<T>*> verts;
+	verts.push(tree.root);
+	TNodeTree<T>* tmp = tree.root;
+	while (!verts.empty()) {
+		if (tmp->left() != nullptr) {
+			verts.push(tmp->left());
+		}
+		if (tmp->right() != nullptr) {
+			verts.push(tmp->right());
+		}
+		std::cout << verts.pop()->data() << " ";
+		if (!verts.empty()) tmp = verts.front();
+	}
+}
