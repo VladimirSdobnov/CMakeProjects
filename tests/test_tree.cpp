@@ -1,3 +1,4 @@
+#pragma once
 #include <../BinarTree/BinarTree.h>
 #include <../gtest/gtest.h>
 #include <../RBBinarTree/RBBinarTree.h>
@@ -90,21 +91,22 @@ TEST(SearchTree_test, can_insert) {
 TEST(RBTree_test, can_insert) {
 	RBTree<int> tree;
 	for (int i = 6; i > -1; i--) {
-		tree.insert(i * 5);
+		tree.Insert(i * 5);
 	}
 
 	RBTree<int> tree2;
 	for (int i = 0; i < 7; i++) {
-		tree2.insert(i * 5);
+		tree2.Insert(i * 5);
 	}
 	srand(time(0));
 	RBTree<int> tree3;
-	
-	for (int i = 0; i < 10; i++) {
+
+	for (int i = 0; i < 15; i++) {
 		int x = rand() % 100;
-
-		tree3.insert(x);
+		std::cout << x << " ";
+		tree3.Insert(x);
 	}
-
+	std::cout << std::endl;
+	tree3.Print();
 }
 
