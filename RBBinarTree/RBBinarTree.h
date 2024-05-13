@@ -47,7 +47,7 @@ public:
 
 	void Recolor() {
 		if (_col == Black) _col = Red;
-		else _col == Black;
+		else _col = Black;
 	}
 	void SwapData(RBNode<T>* n){
 		T tmp = n->_val;
@@ -97,6 +97,8 @@ class RBTree {
 public:
 
 	RBTree() : root(nullptr) {}
+
+	/*bool Find(const T& data);*/
 
 	void Insert(const T& data);
 
@@ -206,16 +208,60 @@ void RBTree<T>::BalanceErase(RBNode<T>* X) {
 			P->Recolor();
 			S->Recolor();
 		}
-		else if (P->Left() == S && S->Left()->Color() == Red) {
+		else if (P->Left() == S && S->Left() != nullptr && S->Left()->Color() == Red) {
 			LLeftRotate(S->Left());
+			S->_col = Red;
+			P->_col = Black;
+			S->Left()->_col = Black;
 			if (S->Parent() == nullptr) { root = S; }
 		}
-		else if (P->Right() == S && S->Right()->Color() == Red) {
+		else if (P->Right() == S && S->Right() != nullptr && S->Right()->Color() == Red) {
 			RRightRotate(S->Right());
+			S->_col = Red;
+			P->_col = Black;
+			S->Right()->_col = Black;
 			if (S->Parent() == nullptr) { root = S; }
+		}
+		else if (P->Left() == S && S->Left() == nullptr && S->Right()->Color() == Red) {
+			RBNode<T>* T1 = S->Right();
+			S->_right = T1->Left();
+			if (S->Right() != nullptr) S->Right()->_parent = S->Right();
+			P->_left = T1->Left();
+			if(P->Left() != nullptr) P->Left()->_parent = P;
+			T1->_right = P;
+			P->_parent = T1;
+			T1->_left = S;
+			S->_parent = T1;
+			P->Recolor();
+			if (T1 == T1->Parent()->Left()) {
+				T1->Parent()->_left = T1;
+			}
+			else {
+				T1->Parent()->_right = T1;
+			}
+		}
+		else if (P->Right() == S && S->Right() == nullptr && S->Left()->Color() == Red) {
+			RBNode<T>* T1 = S->Left();
+			S->_left = T1->Right();
+			if (S->Left() != nullptr) S->Left()->_parent = S->Left();
+			P->_right = T1->Right();
+			if (P->Right() != nullptr) P->Right()->_parent = P;
+			T1->_left = P;
+			T1->_parent = P->Parent();
+			P->_parent = T1;
+			T1->_right = S;
+			S->_parent = T1;
+			P->Recolor();
+			if (P == T1->Parent()->Left()) {
+				T1->Parent()->_left = T1;
+			}
+			else {
+				T1->Parent()->_right = T1;
+			}
+
 		}
 	}
-	if (P->Color() == Black) {
+	else if (P->Color() == Black) {
 		if (S->Color() == Red &&
 			S->Left()->Color() == Black &&
 			S->Right()->Color() == Black) {
@@ -223,29 +269,27 @@ void RBTree<T>::BalanceErase(RBNode<T>* X) {
 				(S->Right()->Right() == nullptr || S->Right()->Right()->Color() == Black) &&
 				(S->Right()->Left() == nullptr || S->Right()->Left()->Color() == Black)) {
 				LLeftRotate(S->Left());
-				S->Recolor();
-				P->Left()->Recolor();
+				S->_col = Black;
 				if (S->Parent() == nullptr) { root = S; }
 			}
 			if (S == P->Right() &&
 				(S->Left()->Right() == nullptr || S->Left()->Right()->Color() == Black) &&
 				(S->Left()->Left() == nullptr || S->Left()->Left()->Color() == Black)) {
 				RRightRotate(S->Left());
-				S->Recolor();
-				P->Right()->Recolor();
+				S->_col = Black;
 				if (S->Parent() == nullptr) { root = S; }
 			}
 			if (S == P->Left() &&
 				S->Right()->Left()->Color() == Red) {
 				LRightRotate(S->Right());
-				P->Recolor();
+				P->_col = Black;
 				S->Right()->Recolor();
 				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
 			if (S == P->Right() &&
 				S->Left()->Right()->Color() == Red) {
 				RLeftRotate(S->Left());
-				P->Recolor();
+				P->_col = Black;
 				S->Left()->Recolor();
 				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
@@ -254,19 +298,19 @@ void RBTree<T>::BalanceErase(RBNode<T>* X) {
 			if (S == P->Left() &&
 				S->Right() != nullptr &&
 				S->Right()->Color() == Red) {
-					LRightRotate(S->Right());
-					S->Recolor();
-					P->Recolor();
-					if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
-				}
+				LRightRotate(S->Right());
+				S->Recolor();
+				P->Recolor();
+				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
 			else if (S == P->Right() &&
 				S->Left() != nullptr &&
 				S->Left()->Color() == Red) {
-					LRightRotate(S->Left());
-					S->Recolor();
-					P->Recolor();
-					if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
-				}
+				LRightRotate(S->Left());
+				S->Recolor();
+				P->Recolor();
+				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
 			else if ((S->Left() == nullptr || S->Left()->Color() == Black) &&
 				(S->Right() == nullptr || S->Right()->Color() == Black)) {
 				S->Recolor();
@@ -506,10 +550,10 @@ void RBTree<T>::Erase(const T& data) {
 
 	if (X->Left() == nullptr && X->Right() == nullptr && X->Color() == Red) {
 		if (X == P->Left()) {
-			P->_left == nullptr;
+			P->_left = nullptr;
 		}
 		else {
-			P->_right == nullptr;
+			P->_right = nullptr;
 		}
 		return;
 	}
@@ -517,19 +561,19 @@ void RBTree<T>::Erase(const T& data) {
 	if (X->Color() == Black) {
 		if (X->Left() != nullptr && X->Right() == nullptr) {
 			X->SwapData(X->Left());
-			X->Left() == nullptr;
+			X->_left = nullptr;
 			return;
 		}
 		else if(X->Left() == nullptr && X->Right() != nullptr) {
 			X->SwapData(X->Right());
-			X->Right() == nullptr;
+			X->_right = nullptr;
 			return;
 		}
-		
 	}
 
 	BalanceErase(X);
 
+	P = X->Parent();
 	if (X == root) { root = nullptr; return; }
 
 	if (X == P->Left()) {
