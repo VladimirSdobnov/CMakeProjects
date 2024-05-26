@@ -1,6 +1,10 @@
 #pragma once
 #include "ParsAlgorithm.h"
 #include "../Polinoms/Polinoms.h"
+#include <BinarTree.h>
+#include <RBBinarTree.h>
+#include <Table.h>
+#include <time.h>
 #include <gtest.h>
 
 //TEST(Algorithm, can_brackets_true) {
@@ -248,4 +252,402 @@
 //}
 
 
+//TEST(test_Polinom, can_generate_rand) {
+//	srand(time(0));
+//	Polinom p1 = RandPolinom(3, 5);
+//	Polinom p2 = RandPolinom(3, 5);
+//	Polinom res = p1 * p2;
+//	std::cout << p1 << "\n\n" << p2 << "\n\n" << res << std::endl;
+//}
 
+//TEST(test_Polinom, additional) {
+//	srand(time(0));
+//	clock_t StartAdd = clock();
+//	for (int i = 0; i < 100; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 + p2;
+//	}
+//	clock_t FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for additional 100 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 1000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 + p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for additional 1000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 10000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 + p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for additional 10000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 100000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 + p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for additional 100000 polinoms " << FinishAdd << std::endl;
+//}
+//
+//TEST(test_Polinom, subtraction) {
+//	srand(time(0));
+//	clock_t StartAdd = clock();
+//	for (int i = 0; i < 100; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 - p2;
+//	}
+//	clock_t FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for subtraction 100 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 1000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 - p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for subtraction 1000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 10000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 - p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for subtraction 10000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 100000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 - p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for subtraction 100000 polinoms " << FinishAdd << std::endl;
+//}
+//
+//TEST(test_Polinom, mult) {
+//	srand(time(0));
+//	clock_t StartAdd = clock();
+//	for (int i = 0; i < 100; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	clock_t FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 100 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 1000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 1000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 10000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 10000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 100000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 100000 polinoms " << FinishAdd << std::endl;
+//}
+
+TEST(test_Polinom, SearchBinarTree) {
+	srand(time(0));
+	TSearchTree<TPair<std::string, Polinom>> tree;
+	clock_t StartAdd = clock();
+	for (int i = 0; i < 100; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree.insert(elem);
+	}
+	clock_t FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 100 polinoms " << FinishAdd << std::endl;
+
+
+	StartAdd = clock();
+	for (int i = 0; i < 100; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 100 elements " << FinishAdd / 100 << std::endl;
+
+
+	StartAdd = clock();
+	Polinom p1 = RandPolinom(3, 5);
+	std::string name = "pos" + std::to_string(rand() % 100);
+	TPair<std::string, Polinom> elem(name, p1);
+	tree.erase(elem);
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 100 polinoms " << FinishAdd << std::endl;
+
+
+
+	TSearchTree<TPair<std::string, Polinom>> tree2;
+	StartAdd = clock();
+	for (int i = 0; i < 1000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree2.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 1000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 1000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree2.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 1000 elements " << FinishAdd / 1000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 1000);
+	TPair<std::string, Polinom> elem2(name, p1);
+	tree2.erase(elem2);
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 1000 polinoms " << FinishAdd << std::endl;
+
+
+	TSearchTree<TPair<std::string, Polinom>> tree3;
+	StartAdd = clock();
+	for (int i = 0; i < 10000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree3.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 10000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 10000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree3.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 10000 elements " << FinishAdd / 10000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 10000);
+	TPair<std::string, Polinom> elem3(name, p1);
+	tree3.erase(elem3);
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 10000 polinoms " << FinishAdd << std::endl;
+
+	TSearchTree<TPair<std::string, Polinom>> tree4;
+	StartAdd = clock();
+	for (int i = 0; i < 100000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree4.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 100000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 100000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree4.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 100000 elements " << FinishAdd / 100000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 100000);
+	TPair<std::string, Polinom> elem4(name, p1);
+	tree4.erase(elem4);
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 100000 polinoms " << FinishAdd << std::endl;
+
+}
+
+TEST(test_Polinom, BinarTree) {
+	srand(time(0));
+	TBinarTree<TPair<std::string, Polinom>> tree;
+	clock_t StartAdd = clock();
+	for (int i = 0; i < 100; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree.insert(elem);
+	}
+	clock_t FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 100 polinoms " << FinishAdd << std::endl;
+
+
+	StartAdd = clock();
+	for (int i = 0; i < 100; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 100 elements " << FinishAdd / 100 << std::endl;
+
+
+	StartAdd = clock();
+	Polinom p1 = RandPolinom(3, 5);
+	std::string name = "pos" + std::to_string(rand() % 100);
+	TPair<std::string, Polinom> elem(name, p1);
+	tree.erase(tree.find(elem));
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 100 polinoms " << FinishAdd << std::endl;
+
+
+
+	TBinarTree<TPair<std::string, Polinom>> tree2;
+	StartAdd = clock();
+	for (int i = 0; i < 1000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree2.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 1000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 1000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree2.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 1000 elements " << FinishAdd / 1000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 1000);
+	TPair<std::string, Polinom> elem2(name, p1);
+	tree2.erase(tree2.find(elem2));
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 1000 polinoms " << FinishAdd << std::endl;
+
+
+	TBinarTree<TPair<std::string, Polinom>> tree3;
+	StartAdd = clock();
+	for (int i = 0; i < 10000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree3.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 10000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 10000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree3.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 10000 elements " << FinishAdd / 10000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 10000);
+	TPair<std::string, Polinom> elem3(name, p1);
+	tree3.erase(tree3.find(elem3));
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 10000 polinoms " << FinishAdd << std::endl;
+
+	TBinarTree<TPair<std::string, Polinom>> tree4;
+	StartAdd = clock();
+	for (int i = 0; i < 100000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree4.insert(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for insert 100000 polinoms " << FinishAdd << std::endl;
+
+	StartAdd = clock();
+	for (int i = 0; i < 100000; i++) {
+		Polinom p1 = RandPolinom(3, 5);
+		std::string name = "pos" + std::to_string(i);
+		TPair<std::string, Polinom> elem(name, p1);
+		tree4.find(elem);
+	}
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Average time for found polinoms in Binar tree with 100000 elements " << FinishAdd / 100000 << std::endl;
+
+	StartAdd = clock();
+	p1 = RandPolinom(3, 5);
+	name = "pos" + std::to_string(rand() % 100000);
+	TPair<std::string, Polinom> elem4(name, p1);
+	tree4.erase(tree4.find(elem4));
+	FinishAdd = clock() - StartAdd;
+	std::cout << "Time for erase polinom from Binar Tree with 100000 polinoms " << FinishAdd << std::endl;
+
+}
+//
+//TEST(test_Polinom, RBTree) {
+//	srand(time(0));
+//	clock_t StartAdd = clock();
+//	for (int i = 0; i < 100; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	clock_t FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 100 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 1000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 1000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 10000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 10000 polinoms " << FinishAdd << std::endl;
+//	StartAdd = clock();
+//	for (int i = 0; i < 100000; i++) {
+//		Polinom p1 = RandPolinom(3, 5);
+//		Polinom p2 = RandPolinom(3, 5);
+//		Polinom res = p1 * p2;
+//	}
+//	FinishAdd = clock() - StartAdd;
+//	std::cout << "Time for mult 100000 polinoms " << FinishAdd << std::endl;
+//}

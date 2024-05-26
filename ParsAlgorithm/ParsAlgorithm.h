@@ -3,7 +3,6 @@
 #include "../QueueOnList/QueueOnList.h"
 #include"../List/list.h"
 #include <string>
-#include <map>
 #include <math.h>
 
 enum LexemTypes {Operator, Number, OpenBracket, CloseBracket, Factorial, Func, Varieble

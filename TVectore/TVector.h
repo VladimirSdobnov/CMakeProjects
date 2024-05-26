@@ -243,7 +243,7 @@ public:
         }
         return tmp;
     }
-    TVector operator*(T val) {
+    TVector operator*(const T& val) {
         TVector<T> tmp(*this);
         for (int i = 0; i < _count; i++) {
             tmp[i] = tmp[i] * val;
@@ -365,18 +365,4 @@ int* find_pos(ForwardIterator<T> begin, ForwardIterator<T> end, const T& elem) {
         begin++;
     }
     return nullptr;
-}
-
-template<class T>
-int BinarSearchPos(TVector<T> data, const T& elem) {
-    int left = 0;
-    int right = data.size() - 1;
-    int mid = 0;
-    while (left <= right) {
-        mid = (left + right) * 0.5;
-        if (elem == data[mid]) return mid;
-        if (elem > data[mid]) left = mid + 1;
-        else if (elem < data[mid]) right = mid - 1;
-    }
-    return mid;
 }

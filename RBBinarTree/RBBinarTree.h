@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 
 enum Color {Black /*[ ]*/, Red /*( )*/, BlackBlack };
@@ -223,41 +222,14 @@ void RBTree<T>::BalanceErase(RBNode<T>* X) {
 			if (S->Parent() == nullptr) { root = S; }
 		}
 		else if (P->Left() == S && S->Left() == nullptr && S->Right()->Color() == Red) {
-			RBNode<T>* T1 = S->Right();
-			S->_right = T1->Left();
-			if (S->Right() != nullptr) S->Right()->_parent = S->Right();
-			P->_left = T1->Left();
-			if(P->Left() != nullptr) P->Left()->_parent = P;
-			T1->_right = P;
-			P->_parent = T1;
-			T1->_left = S;
-			S->_parent = T1;
+			LRightRotate(S->Right());
+			S->Parent()->Recolor();
 			P->Recolor();
-			if (T1 == T1->Parent()->Left()) {
-				T1->Parent()->_left = T1;
-			}
-			else {
-				T1->Parent()->_right = T1;
-			}
 		}
 		else if (P->Right() == S && S->Right() == nullptr && S->Left()->Color() == Red) {
-			RBNode<T>* T1 = S->Left();
-			S->_left = T1->Right();
-			if (S->Left() != nullptr) S->Left()->_parent = S->Left();
-			P->_right = T1->Right();
-			if (P->Right() != nullptr) P->Right()->_parent = P;
-			T1->_left = P;
-			T1->_parent = P->Parent();
-			P->_parent = T1;
-			T1->_right = S;
-			S->_parent = T1;
+			RLeftRotate(S->Left());
+			S->Parent()->Recolor();
 			P->Recolor();
-			if (P == T1->Parent()->Left()) {
-				T1->Parent()->_left = T1;
-			}
-			else {
-				T1->Parent()->_right = T1;
-			}
 
 		}
 	}
@@ -270,54 +242,87 @@ void RBTree<T>::BalanceErase(RBNode<T>* X) {
 				(S->Right()->Left() == nullptr || S->Right()->Left()->Color() == Black)) {
 				LLeftRotate(S->Left());
 				S->_col = Black;
+				S->Right()->Left()->Recolor();
 				if (S->Parent() == nullptr) { root = S; }
 			}
-			if (S == P->Right() &&
+			else if (S == P->Right() &&
 				(S->Left()->Right() == nullptr || S->Left()->Right()->Color() == Black) &&
 				(S->Left()->Left() == nullptr || S->Left()->Left()->Color() == Black)) {
-				RRightRotate(S->Left());
+				RRightRotate(S->Right());
 				S->_col = Black;
+				S->Left()->Right()->Recolor();
 				if (S->Parent() == nullptr) { root = S; }
 			}
-			if (S == P->Left() &&
-				S->Right()->Left()->Color() == Red) {
+			else if (S == P->Left() &&
+				(S->Right()->Left() == nullptr ||
+				 S->Right()->Left()->Color() == Black)) {
 				LRightRotate(S->Right());
 				P->_col = Black;
-				S->Right()->Recolor();
+				S->Recolor();
+				if (S->Left() != nullptr)S->Left()->Recolor();
 				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
-			if (S == P->Right() &&
+			else if (S == P->Right() &&
 				S->Left()->Right()->Color() == Red) {
 				RLeftRotate(S->Left());
 				P->_col = Black;
-				S->Left()->Recolor();
+				S->Recolor();
+				if (S->Right() != nullptr) S->Right()->Recolor();
+				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
+			else if (S == P->Left() &&
+				S->Right()->Left()->Color() == Red) {
+				LRightRotate(S->Right());
+				P->_col = Black;
+				if (S->Right() != nullptr)S->Right()->Recolor();
+				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
+			else if (S == P->Right() &&
+				S->Left()->Right()->Color() == Red) {
+				RLeftRotate(S->Left());
+				P->_col = Black;
+				if(S->Left() != nullptr) S->Left()->Recolor();
 				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
 		}
-		if (S->Color() == Black) {
+		else if (S->Color() == Black) {
 			if (S == P->Left() &&
 				S->Right() != nullptr &&
 				S->Right()->Color() == Red) {
 				LRightRotate(S->Right());
-				S->Recolor();
 				P->Recolor();
-				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+				if (S->Parent() == nullptr) { root = S; }
+				else if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
 			else if (S == P->Right() &&
 				S->Left() != nullptr &&
 				S->Left()->Color() == Red) {
-				LRightRotate(S->Left());
-				S->Recolor();
+				RLeftRotate(S->Left());
 				P->Recolor();
-				if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+				if (S->Parent() == nullptr) { root = S; }
+				else if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
 			}
 			else if ((S->Left() == nullptr || S->Left()->Color() == Black) &&
 				(S->Right() == nullptr || S->Right()->Color() == Black)) {
 				S->Recolor();
 				BalanceErase(P);
 			}
+			if (S == P->Left() &&
+				S->Left() != nullptr &&
+				S->Left()->Color() == Red) {
+				LLeftRotate(S->Left());
+				if (S->Parent() == nullptr) { root = S; }
+				else if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
+			else if (S == P->Right() &&
+				S->Right() != nullptr &&
+				S->Right()->Color() == Red) {
+				RRightRotate(S->Right());
+				if (S->Parent() == nullptr) { root = S; }
+				else if (S->Parent()->Parent() == nullptr) { root = S->Parent(); }
+			}
 		}
-}
+	}
 
 	if (root->Color() == Red) { root->_col = Black; }
 	
