@@ -299,8 +299,9 @@ public:
         if (i == _count - 1) { pop_back(); }
         InIterator<T> it = begin_in();
         for (int x = 0; x < i; x++) { ++it; }
-		std::copy(begin_in(), it,pMem);
+		std::copy(begin_in(), it, pMem);
         ++it;
+        if (it != nullptr)
 		std::copy(it, end_in(), pMem + i);
         _count--;
     }

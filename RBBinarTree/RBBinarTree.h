@@ -89,15 +89,15 @@ class RBTree {
 
 	void Print(RBNode<T>* n, int* tabs);
 
-	RBNode<T>* Find(const T& data);
+	
 
 	RBNode<T>* FindMax(RBNode<T>* val);
 
 public:
 
-	RBTree() : root(nullptr) {}
+	RBNode<T>* Find(const T& data);
 
-	/*bool Find(const T& data);*/
+	RBTree() : root(nullptr) {}
 
 	void Insert(const T& data);
 

@@ -4,7 +4,7 @@
 
 enum Status {Full, Empty};
 
-#define SIZE 50 
+#define SIZE 110000 
 #define STEP 3 
 
 
