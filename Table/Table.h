@@ -4,7 +4,7 @@
 
 enum Status {Full, Empty};
 
-#define SIZE 50 
+#define SIZE 110000 
 #define STEP 3 
 
 
@@ -21,6 +21,10 @@ public:
 	bool operator==(const TKey& k) const { return _key == k; }
 	bool operator!=(const TPair& other) const { return !(_key == other._key); }
 	bool operator!=(const TKey& k) const { return !(_key == k); }
+	bool operator>(const TPair& other) const { return _key > other._key; }
+	bool operator>(const TKey& k) const { return _key > k; }
+	bool operator<(const TPair& other) const { return !(_key < other._key); }
+	bool operator<(const TKey& k) const { return !(_key < k); }
 };
 
 template <class TKey, class TValue>

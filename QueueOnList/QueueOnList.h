@@ -1,5 +1,5 @@
 #pragma once
-#include "../List/list.h">
+#include "../List/list.h"
 
 template <class T>
 class TQueueOnList {

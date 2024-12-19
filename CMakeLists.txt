@@ -21,6 +21,7 @@ add_subdirectory(TVectore)
 add_subdirectory(Table)
 add_subdirectory(BinarTree)
 add_subdirectory(RBBinarTree)
+add_subdirectory(FordBelman)
 
 
 add_subdirectory(List)   # подключаем дополнительный CMakeLists.txt из подкаталога с именем lib_example

@@ -1,6 +1,10 @@
 #pragma once
 #include "ParsAlgorithm.h"
 #include "../Polinoms/Polinoms.h"
+#include <BinarTree.h>
+#include <RBBinarTree.h>
+#include <Table.h>
+#include <time.h>
 #include <gtest.h>
 
 //TEST(Algorithm, can_brackets_true) {
@@ -247,5 +251,380 @@
 //	std::cout << res << std::endl;
 //}
 
+//TEST(test_Polinom, can_generate_rand) {
+//	srand(time(0));
+//	Polinom p1 = RandPolinom(3, 5);
+//	Polinom p2 = RandPolinom(3, 5);
+//	Polinom res = p1 * p2;
+//	std::cout << p1 << "\n\n" << p2 << "\n\n" << res << std::endl;
+//}
 
+void shuffle(TVector<std::string>& v) {
+	for (int i = 0; i < v.size() / 2; i++) {
+		srand(i);
+		int x = rand() % v.size();
+		std::swap(v[i], v[x]);
+	}
+}
+TVector<std::string> name(110000, 0);
 
+TEST(test_Polinom, create_vec_name) {
+	for (int i = 0; i < 110000; i++) {
+		std::string x = std::string("pos") + std::to_string(i);
+		name.append(x);
+	}
+	shuffle(name);
+}
+//
+//TEST(test_Polinom, additional) {
+//	for (int i = 100; i < 1000000; i *= 10) {
+//		srand(i);
+//		Polinom p1 = RandPolinom(3, i);
+//		srand(i + 2);
+//		Polinom p2 = RandPolinom(3, i);
+//		clock_t StartAdd = clock();
+//		Polinom res = p1 + p2;
+//		clock_t FinishAdd = clock() - StartAdd;
+//		std::cout << "Time for additional polinoms with " << i << " monoms " << FinishAdd << std::endl;
+//	}
+//}
+//
+//TEST(test_Polinom, mult) {
+//	for (int i = 10; i < 300; i *= 2) {
+//		srand(i);
+//		Polinom p1 = RandPolinom(3, i);
+//		srand(i + 2);
+//		Polinom p2 = RandPolinom(3, i);
+//		clock_t StartAdd = clock();
+//		Polinom res = p1 * p2;
+//		clock_t FinishAdd = clock() - StartAdd;
+//		std::cout << "Time for mult polinoms with " << i << " monoms " << FinishAdd << std::endl;
+//	}
+//}
+//
+//TEST(test_Polinom, SearchBinarTree) {
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	TSearchTree<TPair<std::string, Polinom>> tree;
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.insert(elem);
+//		}
+//		
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n  + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.insert(elem);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.find(elem);
+//			
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.erase(elem);
+//
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//		
+//		
+//		
+//		
+//
+//		std::cout << "Average time for insert in search tree with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in search tree with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from search Tree with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//
+//}
+//
+//TEST(test_Polinom, BinarTree) {
+//
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	TBinarTree<TPair<std::string, Polinom>> tree;
+//
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.insert(elem);
+//		}
+//
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.insert(elem);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.find(elem);
+//
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.erase(tree.find(elem));
+//
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//
+//		std::cout << "Average time for insert in binar tree with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in binar tree with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from binar Tree with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//}
+//
+//TEST(test_Polinom, RBTree) {
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	RBTree<TPair<std::string, Polinom>> tree;
+//
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.Insert(elem);
+//		}
+//
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.Insert(elem);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.Find(elem);
+//
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			TPair<std::string, Polinom> elem(name[i], p1);
+//			tree.Erase(elem);
+//
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//
+//		std::cout << "Average time for insert in RB tree with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in RB tree with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from RB Tree with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//}
+
+TEST(test_Polinom, UnorderedVec) {
+	srand(time(0));
+	int n = 100;
+	int i = 0;
+	UnorderedTableVec<std::string, Polinom> tree;
+
+	do {
+		for (i; i < n; i++) {
+			Polinom p1 = RandPolinom(3, 5);
+			tree.insert(name[i], p1);
+		}
+
+		clock_t StartIns = clock();
+		for (int i = n; i < n + n / 10; i++) {
+			Polinom p1 = RandPolinom(3, 5);
+			tree.insert(name[i], p1);
+
+		}
+		clock_t FinishIns = clock() - StartIns;
+
+		clock_t StartFind = clock();
+		for (int i = n; i < n + n / 10; i++) {
+			tree.search(name[i]);
+
+		}
+		clock_t FinishFind = clock() - StartFind;
+
+		clock_t StartErase = clock();
+		for (int i = n; i < n + n / 10; i++) {
+			tree.erase(name[i]);
+		}
+		clock_t FinishErase = clock() - StartErase;
+
+		std::cout << "Average time for insert in unnordered vec table with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+		std::cout << "Average time for found polinoms in unnordered vec table with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+		std::cout << "Average time for erase polinom from unnordered vec table with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+
+		n *= 10;
+
+	} while (n < 1000000);
+}
+
+//TEST(test_Polinom, UnorderedList) {
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	UnorderedTableList<std::string, Polinom> tree;
+//
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//		}
+//
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.search(name[i]);
+//
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.erase(name[i]);
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//
+//		std::cout << "Average time for insert in unnordered list table with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in unnordered list table with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from unnordered list table with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//}
+//
+//size_t func(const std::string& str) {
+//	size_t res = 0;
+//	for (auto elem : str) { res += elem; }
+//	return res;
+//}
+//
+//TEST(test_Polinom, HashTableStep) {
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	HashTableStep<std::string, Polinom> tree(func);
+//
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//		}
+//
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.search(name[i]);
+//
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.erase(name[i]);
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//
+//		std::cout << "Average time for insert in hash step table with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in hash step table with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from hash step table with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//}
+//
+//TEST(test_Polinom, HashTableNode) {
+//	srand(time(0));
+//	int n = 100;
+//	int i = 0;
+//	HashTableNode<std::string, Polinom> tree(func);
+//
+//	do {
+//		for (i; i < n; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//		}
+//
+//		clock_t StartIns = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			Polinom p1 = RandPolinom(3, 5);
+//			tree.insert(name[i], p1);
+//
+//		}
+//		clock_t FinishIns = clock() - StartIns;
+//
+//		clock_t StartFind = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.search(name[i]);
+//
+//		}
+//		clock_t FinishFind = clock() - StartFind;
+//
+//		clock_t StartErase = clock();
+//		for (int i = n; i < n + n / 10; i++) {
+//			tree.erase(name[i]);
+//		}
+//		clock_t FinishErase = clock() - StartErase;
+//
+//		std::cout << "Average time for insert in hash step table with " << n << " elems " << (float)FinishIns / (n / 10) << std::endl;
+//		std::cout << "Average time for found polinoms in hash step table with " << n << " elems " << (float)FinishFind / (n / 10) << std::endl;
+//		std::cout << "Average time for erase polinom from hash step table with " << n << " elems " << (float)FinishErase / (n / 10) << std::endl;
+//
+//		n *= 10;
+//
+//	} while (n < 1000000);
+//}

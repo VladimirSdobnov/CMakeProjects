@@ -3,6 +3,20 @@
 #include "../TVectore/TVector.h"
 
 template<class T>
+int BinarSearchPos(TVector<T> data, const T& elem) {
+	int left = 0;
+	int right = data.size() - 1;
+	int mid = 0;
+	while (left <= right) {
+		mid = (left + right) * 0.5;
+		if (elem == data[mid]) return mid;
+		if (elem > data[mid]) left = mid + 1;
+		else if (elem < data[mid]) right = mid - 1;
+	}
+	return mid;
+}
+
+template<class T>
 void prior_insert(TVector<T>& vec, T elem) {
 	int pos = BinarSearchPos<T>(vec, elem);
 	if (vec.size() == 0) { vec.append(elem); }
@@ -176,6 +190,15 @@ TVector<Lexem> GetVars(std::string input) {
 	return variebles;
 }
 
+//ѕо умолчанию генерирует не нулевой моном
+Monom RandMonom(int var_count, float max_pow = 100, float min_pow = 0, float max_coef = 1000, float min_coef = 1) {
+	Monom res(var_count);
+	res.coefficient = min_coef + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max_coef - min_coef)));
+	for (int i = 0; i < var_count; i++) {
+		res.powers[i] = rand() % int((max_pow - min_pow)) + min_pow;
+	}
+	return res;
+}
 
 class Polinom {
 	TVector<Monom> monoms;
@@ -244,7 +267,9 @@ public:
 
 	Polinom operator*(const float& x) {
 		Polinom res(*this);
-		res.monoms = res.monoms * x;
+		for (int i = 0; i < res.monoms.size(); i++) {
+			res.monoms[i] = res.monoms[i] * x;
+		}
 		return res;
 	}
 
@@ -306,6 +331,21 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& ostr, Polinom& p);
 };
+
+Polinom RandPolinom(int var_count = 3, int monom_count = 10) {
+	TVector<Lexem> vars(var_count);
+	for (int i = 1; i <= var_count; i++) {
+		std::string var("x" + std::to_string(i));
+		int pos = 0;
+		vars.append(Lexem(var, pos));
+	}
+	Polinom res(vars);
+	for (int i = 0; i < monom_count; i++) {
+		Monom m = RandMonom(var_count);
+		res = res + m;
+	}
+	return res;
+}
 
 std::ostream& operator<<(std::ostream& ostr, Polinom& p) {
 	int k = 0;
